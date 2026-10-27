@@ -1,16 +1,147 @@
-# React + Vite
+# Getto India – E-commerce Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A responsive e-commerce frontend application built with React and Vite. The application provides the user interface for browsing products and interacting with e-commerce features through backend APIs.
 
-Currently, two official plugins are available:
+## 🚀 Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Responsive user interface
+- Product listing and browsing
+- API integration with the backend
+- Component-based architecture using React
+- Fast development and build process with Vite
+- Environment-based API configuration
+- ESLint configuration for code quality
 
-## React Compiler
+## 🛠️ Tech Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **Frontend:** React
+- **Build Tool:** Vite
+- **Language:** JavaScript
+- **Styling:** CSS
+- **Code Quality:** ESLint
+- **Package Manager:** npm
 
-## Expanding the ESLint configuration
+## 📁 Project Structure
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```text
+getto-india-ecommerce-frontend/
+├── public/
+├── src/
+│   ├── assets/
+│   ├── components/
+│   ├── pages/
+│   ├── services/
+│   ├── App.jsx
+│   └── main.jsx
+├── .env.example
+├── .gitignore
+├── eslint.config.js
+├── index.html
+├── package.json
+├── package-lock.json
+├── vite.config.js
+└── README.md
+```
+
+*Note: The structure above is a suggested layout. Update it to match your actual source files.*
+
+## 📋 Prerequisites
+
+Install the following before running the project:
+
+- Node.js
+- npm
+- Git
+
+## ⚙️ Installation
+
+Clone the repository:
+
+```bash
+git clone https://github.com/ponnanapavan/ponnanapavan-getto_india_ecommerce_frontend.git
+```
+
+Navigate to the project directory:
+
+```bash
+cd ponnanapavan-getto_india_ecommerce_frontend
+```
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+## 🔐 Environment Configuration
+
+Create a `.env` file in the project root.
+
+For example, if your backend API uses a configurable URL:
+
+```env
+VITE_API_URL=http://localhost:5000
+```
+
+Replace the URL with your actual backend API address and variable name as required by your application.
+
+**Important:** Vite exposes variables prefixed with `VITE_` to frontend code. Never store database passwords, private API keys, or other secrets in frontend environment variables.
+
+Keep `.env` out of Git and commit only a safe `.env.example` file.
+
+## ▶️ Run the Application
+
+Start the development server:
+
+```bash
+npm run dev
+```
+
+Open the local URL printed in your terminal, usually:
+
+```text
+http://localhost:5173
+```
+
+## 🏗️ Production Build
+
+Create an optimized production build:
+
+```bash
+npm run build
+```
+
+Preview the production build locally:
+
+```bash
+npm run preview
+```
+
+## 🧹 Code Quality
+
+Run ESLint:
+
+```bash
+npm run lint
+```
+
+## 🔗 Backend Integration
+
+This frontend can communicate with the Getto India E-commerce backend through REST APIs.
+
+Make sure that:
+
+- The backend server is running.
+- The API base URL is correctly configured.
+- The backend allows requests from the frontend origin through CORS.
+- The required environment variables are configured locally.
+
+## 🔒 Security
+
+- Do not commit `.env` files.
+- Never expose database credentials or server-side secrets in frontend code.
+- Use HTTPS for production API communication.
+- Configure authentication and authorization securely on the backend.
+
+
+
