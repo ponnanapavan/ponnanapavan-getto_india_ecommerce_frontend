@@ -67,6 +67,7 @@ mark { background: var(--mark); color: inherit; border-radius: 3px; padding: 0 1
   background: #fff; color: var(--ink);
   border: 1px solid var(--line); border-radius: 12px;
   box-shadow: 0 18px 40px rgba(17, 24, 39, 0.14);
+  z-index: 30;
 }
 .suggest li { padding: 10px 12px; border-radius: 8px; font-size: 14px; cursor: pointer; }
 .suggest li:hover { background: var(--accent-soft); }

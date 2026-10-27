@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import './ProductCatalogue.css';
 
-const API_URL = import.meta.env.VITE_API_URL 
+const API_URL = import.meta.env.VITE_API_URL;
 const PAGE_SIZE = 20;
 const DEBOUNCE_MS = 350;
 const MIN_SPINNER_MS = 600;
@@ -333,23 +333,31 @@ const ProductCatalogue = () => {
     return () => { clearTimeout(t); controller.abort(); };
   }, [filters.q, showSuggest]);
 
+  // FIX: use functional updates so `filters` in the closure is always fresh
   const update = (patch) => setState((s) => ({ filters: { ...s.filters, ...patch }, page: 1 }));
-  const toggle = (key, value) =>
-    update({ [key]: filters[key].includes(value) ? filters[key].filter((v) => v !== value) : [...filters[key], value] });
+
+  const toggle = (key, value) => setState((s) => {
+    const list = Array.isArray(s.filters[key]) ? s.filters[key] : [];
+    const next = list.includes(value) ? list.filter((v) => v !== value) : [...list, value];
+    return { filters: { ...s.filters, [key]: next }, page: 1 };
+  });
+
   const clearAll = () => setState({ filters: { ...DEFAULT_FILTERS }, page: 1 });
+
   const goToPage = (p) => {
     setState((s) => ({ ...s, page: p }));
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const chips = [
-    ...filters.category.map((c) => ({ label: c, remove: () => toggle('category', c) })),
-    ...filters.brand.map((b) => ({ label: b, remove: () => toggle('brand', b) })),
-    filters.minPrice !== '' && { label: `Min ${rupees.format(Number(filters.minPrice) || 0)}`, remove: () => update({ minPrice: '' }) },
-    filters.maxPrice !== '' && { label: `Max ${rupees.format(Number(filters.maxPrice) || 0)}`, remove: () => update({ maxPrice: '' }) },
-    filters.minRating && { label: `${filters.minRating}★ & up`, remove: () => update({ minRating: '' }) },
-    filters.inStock && { label: 'In stock only', remove: () => update({ inStock: false }) },
-  ].filter(Boolean);
+  // FIX: build chips from the latest `filters` (they always recompute on render)
+  const chips = [];
+  filters.category.forEach((c) => chips.push({ label: c, remove: () => toggle('category', c) }));
+  filters.brand.forEach((b) => chips.push({ label: b, remove: () => toggle('brand', b) }));
+  if (filters.minPrice !== '') chips.push({ label: `Min ${rupees.format(Number(filters.minPrice) || 0)}`, remove: () => update({ minPrice: '' }) });
+  if (filters.maxPrice !== '') chips.push({ label: `Max ${rupees.format(Number(filters.maxPrice) || 0)}`, remove: () => update({ maxPrice: '' }) });
+  if (filters.minRating) chips.push({ label: `${filters.minRating}★ & up`, remove: () => update({ minRating: '' }) });
+  if (filters.inStock) chips.push({ label: 'In stock only', remove: () => update({ inStock: false }) });
+
   const hasFilters = chips.length > 0 || filters.q !== '' || filters.sort !== 'newest';
 
   const terms = applied.filters.q.trim().split(/\s+/).filter(Boolean);
@@ -402,8 +410,8 @@ const ProductCatalogue = () => {
           </button>
           {options.categories.map((c) => (
             <button type="button" key={c.name}
-              className={filters.category.length === 1 && filters.category[0] === c.name ? 'pill on' : 'pill'}
-              onClick={() => update({ category: [c.name] })}>
+              className={filters.category.includes(c.name) ? 'pill on' : 'pill'}
+              onClick={() => toggle('category', c.name)}>
               <span aria-hidden="true">{(CATEGORY_ART[c.name] || ['📦'])[0]}</span> {c.name}
             </button>
           ))}
@@ -467,7 +475,7 @@ const ProductCatalogue = () => {
           </div>
 
           {chips.length > 0 && (
-            <div className="chips">
+            <div className="chips" key={chips.map((c) => c.label).join('|')}>
               {chips.map((c) => (
                 <button type="button" key={c.label} className="chip" onClick={c.remove} aria-label={`Remove ${c.label}`}>
                   {c.label} <span aria-hidden="true">×</span>
